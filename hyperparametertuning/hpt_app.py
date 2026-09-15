@@ -13,7 +13,7 @@ st.title('📊 Customer Churn Prediction Dashboard')
 @st.cache_resource
 def load_assets():
     # Load your updated best model found via Grid Search
-    model = tf.keras.models.load_model('best_model.keras')
+    model = tf.keras.models.load_model('optimal_model.keras')
     
     with open('label_encoder_gender_hpt.pkl', 'rb') as file:
         label_encoder_gender = pickle.load(file)
