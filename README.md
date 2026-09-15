@@ -1,69 +1,52 @@
-<div align="center">
-
 # 🧠 ANN Machine Learning Projects
 
-### Artificial Neural Networks for Classification & Regression
+A practical collection of **Artificial Neural Network (ANN)** projects built with **TensorFlow/Keras**, **Scikit-learn**, **Pandas**, **NumPy**, and **Streamlit**.
 
-A collection of end-to-end **Artificial Neural Network projects** built with **TensorFlow/Keras**, **Scikit-learn**, **Pandas**, **NumPy**, and **Streamlit**.
+This repository demonstrates how the same customer dataset can be used for different supervised learning problems:
 
-<p>
-  <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/TensorFlow-2.21.0-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow">
-  <img src="https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit">
-  <img src="https://img.shields.io/badge/Scikit--learn-ML-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="Scikit-learn">
-  <img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="License">
-</p>
+* **Binary classification** for customer churn prediction
+* **Regression** for estimated salary prediction
+* **Hyperparameter tuning** for ANN classification
+* **Model inference through Streamlit applications**
+* **Training monitoring with TensorBoard**
 
-<p>
-  <a href="https://github.com/AyAnand117/ANN-Binary-Classification">GitHub Repository</a>
-</p>
-
-</div>
+> **Note:** Although the repository is named `ANN-Binary-Classification`, it has evolved beyond classification and now includes regression and hyperparameter-tuning experiments.
 
 ---
 
-# 📌 Overview
+## 📌 Project Overview
 
-This repository started as an **Artificial Neural Network based customer churn classification project** and has now been expanded to include a second ANN-based **regression problem for estimated salary prediction**.
-
-The goal of the repository is to explore how Artificial Neural Networks can be applied to different types of supervised learning problems while following a complete machine learning workflow.
+The repository uses the `Churn_Modelling.csv` customer dataset and builds separate ANN workflows around different target variables.
 
 ```text
-                    ANN Projects
-                         │
-             ┌───────────┴───────────┐
-             │                       │
-             ▼                       ▼
-      Classification             Regression
-             │                       │
-             ▼                       ▼
-      Customer Churn          Salary Prediction
-             │                       │
-             ▼                       ▼
-        ANN Model               ANN Model
-             │                       │
-             ▼                       ▼
-       Streamlit App            Streamlit App
+                         Customer Dataset
+                                │
+                ┌───────────────┼───────────────┐
+                │               │               │
+                ▼               ▼               ▼
+          Classification   Hyperparameter   Regression
+             Churn           Tuning        Salary Prediction
+                │               │               │
+                ▼               ▼               ▼
+             ANN Model       Grid Search      ANN Model
+                │                               │
+                └───────────────┬───────────────┘
+                                ▼
+                       Saved Model + Artifacts
+                                │
+                                ▼
+                         Streamlit Apps
 ```
 
-The repository therefore demonstrates both:
-
-* **Binary Classification**
-* **Regression**
-
-with reusable preprocessing, trained models, notebooks, and Streamlit applications.
+The main focus is the complete workflow from **data preprocessing and experimentation to model training, persistence, and interactive inference**.
 
 ---
 
 # 🚀 Projects
 
-## 1. 🏦 Customer Churn Prediction
+## 1. Customer Churn Prediction
 
-A binary classification problem that predicts whether a bank customer is likely to churn.
-
-### Objective
-
-Given information about a bank customer, predict the probability that the customer will leave the bank.
+A binary classification project that predicts whether a customer is likely to leave the bank.
 
 ### Target
 
@@ -76,23 +59,9 @@ Exited
 | `0`   | Customer did not churn |
 | `1`   | Customer churned       |
 
-### Model Output
-
-The model produces a probability between `0` and `1`.
-
-The Streamlit application uses a threshold of `0.50`:
-
-```text
-Probability > 0.50
-        ↓
-Likely to churn
-
-Probability ≤ 0.50
-        ↓
-May not churn
-```
-
 ### Input Features
+
+The Streamlit application accepts:
 
 * Geography
 * Gender
@@ -105,15 +74,28 @@ May not churn
 * Credit Card Status
 * Active Member Status
 
-### Application
+### Prediction
 
-The model is deployed through:
+The ANN produces a churn probability.
+
+The current application uses a `0.50` decision threshold:
 
 ```text
-app.py
+Probability > 0.50  →  Likely to churn
+Probability ≤ 0.50  →  May not churn
 ```
 
-Run it with:
+### Key Files
+
+* `experiments.ipynb` → classification experimentation and model development
+* `predictions.ipynb` → prediction-related experiments
+* `model.h5` → trained classification model
+* `app.py` → Streamlit inference application
+* `scaler.pkl` → fitted feature scaler
+* `label_encoder_gender.pkl` → fitted gender encoder
+* `onehot_encoder_geo.pkl` → fitted geography encoder
+
+### Run the Application
 
 ```bash
 streamlit run app.py
@@ -123,41 +105,19 @@ streamlit run app.py
 
 # 2. 💰 Estimated Salary Prediction
 
-The repository now also contains an ANN-based **regression problem** for predicting a customer's estimated salary.
+The repository also contains an ANN-based **regression workflow** that predicts estimated salary.
 
-This problem uses the same underlying customer dataset but changes the prediction objective.
-
-Instead of predicting:
-
-```text
-Exited
-```
-
-the regression model predicts:
+The same customer dataset is used, but the target variable is changed from `Exited` to:
 
 ```text
 EstimatedSalary
 ```
 
-Since `EstimatedSalary` is a continuous numerical value, the task becomes a **regression problem**.
-
-### Objective
-
-Given customer information, estimate the customer's salary using an Artificial Neural Network.
-
-### Model Type
-
-```text
-Artificial Neural Network
-        ↓
-Regression
-        ↓
-Continuous Salary Prediction
-```
+Because salary is a continuous numerical value, this becomes a **regression problem**.
 
 ### Input Features
 
-The regression application uses:
+The regression application accepts:
 
 * Geography
 * Gender
@@ -170,162 +130,105 @@ The regression application uses:
 * Credit Card Status
 * Active Member Status
 
-### Application
+### Key Files
 
-The regression model is served through:
+* `salaryregression.ipynb` → regression experimentation and training
+* `regression_model.keras` → trained regression model
+* `regression_app.py` → Streamlit inference application
+* `scaler_reg.pkl` → regression feature scaler
+* `label_encoder_gender_reg.pkl` → regression gender encoder
+* `onehot_encoder_geo_reg.pkl` → regression geography encoder
 
-```text
-regression_app.py
-```
-
-Run it with:
+### Run the Application
 
 ```bash
 streamlit run regression_app.py
 ```
 
-The application loads:
-
-```text
-regression_model.keras
-```
-
-along with the regression-specific preprocessing artifacts.
+The application loads the trained model and its preprocessing artifacts before generating a salary prediction.
 
 ---
 
-# 🧠 Why Two Problems?
+# 🔬 Hyperparameter Tuning
 
-One of the interesting aspects of this repository is that the same customer dataset can be used to demonstrate two fundamentally different machine learning tasks.
-
-### Classification
+The repository includes a dedicated ANN hyperparameter-tuning experiment:
 
 ```text
-Customer Information
-        ↓
-ANN
-        ↓
-Churn Probability
-        ↓
-Churn / No Churn
+hyperparametertuning.ipynb
 ```
 
-### Regression
+The notebook integrates:
+
+* `SciKeras`
+* `KerasClassifier`
+* `GridSearchCV`
+* TensorFlow/Keras
+
+### Parameters Explored
+
+| Parameter        | Values                  |
+| ---------------- | ----------------------- |
+| Neurons          | `16`, `32`, `64`, `128` |
+| Layers           | `1`, `2`                |
+| Epochs           | `50`, `100`             |
+| Cross-validation | `3-fold`                |
+
+The saved notebook experiment reported the following best configuration:
 
 ```text
-Customer Information
-        ↓
-ANN
-        ↓
-Estimated Salary
-        ↓
-Continuous Numerical Value
+Neurons = 32
+Layers  = 1
+Epochs  = 50
 ```
 
-This makes the repository useful for understanding the difference between **classification and regression using neural networks**.
-
----
-
-# 🔄 Machine Learning Workflow
-
-Both projects follow a similar end-to-end workflow.
+with a cross-validation score of approximately:
 
 ```text
-                    Dataset
-                       │
-                       ▼
-               Data Exploration
-                       │
-                       ▼
-              Feature Selection
-                       │
-                       ▼
-             Feature Engineering
-                       │
-            ┌──────────┴──────────┐
-            ▼                     ▼
-     Categorical Data       Numerical Data
-            │                     │
-            ▼                     ▼
-     Encoding Methods        Scaling
-            │                     │
-            └──────────┬──────────┘
-                       ▼
-                 Train / Test
-                       │
-                       ▼
-                ANN Architecture
-                       │
-                       ▼
-                  Model Training
-                       │
-                       ▼
-                   Evaluation
-                       │
-                       ▼
-                Model Persistence
-                       │
-                       ▼
-                Streamlit App
-                       │
-                       ▼
-                 New Prediction
+0.857
+```
+
+This is the result of the recorded notebook experiment and should not be treated as a production benchmark.
+
+The hyperparameter-tuning preprocessing artifacts are:
+
+```text
+label_encoder_gender_hpt.pkl
+onehot_encode_geo_hpt.pkl
+scaler_hpt.pkl
 ```
 
 ---
 
-# 🧠 Neural Network Workflow
+# 🧩 Data Preprocessing
 
-The repository explores the construction and training of ANN models using TensorFlow/Keras.
+The project uses Scikit-learn preprocessing techniques before feeding the data into the ANN models.
 
-The classification workflow includes:
+## 1. Remove Identifier Columns
 
-```text
-Input Features
-      ↓
-Dense Layers
-      ↓
-Activation Functions
-      ↓
-Output Layer
-      ↓
-Sigmoid Probability
-```
-
-For regression:
+The notebooks remove:
 
 ```text
-Input Features
-      ↓
-Dense Layers
-      ↓
-Activation Functions
-      ↓
-Output Layer
-      ↓
-Continuous Prediction
+RowNumber
+CustomerId
+Surname
 ```
 
----
+These fields act as identifiers rather than meaningful predictive features for the demonstrated workflows.
 
-# 🛠️ Feature Engineering
-
-The projects use Scikit-learn preprocessing techniques before passing the data to the neural networks.
-
-### Gender
+## 2. Gender Encoding
 
 Gender is transformed using:
 
 ```python
-LabelEncoder
+LabelEncoder()
 ```
 
-### Geography
+## 3. Geography Encoding
 
 Geography is transformed using:
 
 ```python
-OneHotEncoder
+OneHotEncoder()
 ```
 
 producing features such as:
@@ -336,85 +239,211 @@ Geography_Germany
 Geography_Spain
 ```
 
-### Numerical Features
+## 4. Feature Scaling
 
-Numerical features are standardized using:
+Numerical inputs are standardized using:
 
 ```python
-StandardScaler
+StandardScaler()
 ```
 
-The fitted preprocessing objects are saved and reused during inference.
+The fitted preprocessing objects are persisted as `.pkl` files.
 
-This helps ensure that the data entering the deployed model follows the same transformation process used during training.
+This allows the Streamlit applications to apply the **same transformations used during model training** before generating predictions.
 
 ---
 
-# 📂 Project Structure
+# 🧠 ANN Architecture
+
+The models are built using TensorFlow/Keras dense neural-network layers.
+
+## Classification
+
+```text
+Input Features
+      ↓
+Dense Layers
+      ↓
+ReLU Activations
+      ↓
+Output Layer
+      ↓
+Sigmoid
+      ↓
+Churn Probability
+```
+
+## Regression
+
+```text
+Input Features
+      ↓
+Dense Layers
+      ↓
+ReLU Activations
+      ↓
+Output Layer
+      ↓
+Continuous Prediction
+      ↓
+Estimated Salary
+```
+
+The hyperparameter-tuning workflow dynamically changes the number of neurons and dense layers to compare different ANN configurations.
+
+---
+
+# 🔄 End-to-End Machine Learning Workflow
+
+```text
+                Raw Dataset
+                     │
+                     ▼
+               Data Cleaning
+                     │
+                     ▼
+            Feature Engineering
+                     │
+           ┌─────────┴─────────┐
+           ▼                   ▼
+     Categorical Data     Numerical Data
+           │                   │
+           ▼                   ▼
+   Label / One-Hot        StandardScaler
+      Encoding
+           │                   │
+           └─────────┬─────────┘
+                     ▼
+                Train / Test
+                     │
+                     ▼
+                ANN Training
+                     │
+          ┌──────────┴──────────┐
+          ▼                     ▼
+     Classification          Regression
+          │                     │
+          ▼                     ▼
+    Saved Model            Saved Model
+          │                     │
+          └──────────┬──────────┘
+                     ▼
+            Serialized Artifacts
+                     │
+                     ▼
+             Streamlit Inference
+```
+
+This demonstrates how a machine learning project can move from experimentation in notebooks to a reusable prediction application.
+
+---
+
+# 📈 TensorBoard & Experiment Tracking
+
+Training logs are maintained separately for the classification and regression workflows:
+
+```text
+logs/
+regressionlogs/
+```
+
+### Classification
+
+```bash
+tensorboard --logdir logs
+```
+
+### Regression
+
+```bash
+tensorboard --logdir regressionlogs
+```
+
+The repository also contains model and training visualizations inside:
+
+```text
+screenshots/
+```
+
+---
+
+# 📂 Repository Structure
 
 ```text
 ANN-Binary-Classification/
 │
-├── 📊 Dataset
-│   └── Churn_Modelling.csv
+├── Churn_Modelling.csv
+├── LICENSE
+├── README.md
+├── requirements.txt
 │
-├── 🧠 Classification
-│   ├── app.py
-│   ├── experiments.ipynb
-│   ├── predictions.ipynb
-│   ├── model.h5
-│   ├── scaler.pkl
-│   ├── label_encoder_gender.pkl
-│   └── onehot_encoder_geo.pkl
+├── app.py
+├── experiments.ipynb
+├── predictions.ipynb
+├── hyperparametertuning.ipynb
+├── model.h5
 │
-├── 💰 Regression
-│   ├── regression_app.py
-│   ├── salaryregression.ipynb
-│   ├── regression_model.keras
-│   ├── scaler_reg.pkl
-│   ├── label_encoder_gender_reg.pkl
-│   └── onehot_encoder_geo_reg.pkl
+├── label_encoder_gender.pkl
+├── onehot_encoder_geo.pkl
+├── scaler.pkl
 │
-├── 📈 Training Logs
-│   ├── logs/
-│   └── regressionlogs/
+├── label_encoder_gender_hpt.pkl
+├── onehot_encode_geo_hpt.pkl
+├── scaler_hpt.pkl
 │
-├── 📸 Screenshots
-│   └── screenshots/
+├── regression_app.py
+├── salaryregression.ipynb
+├── regression_model.keras
 │
-├── 📦 Configuration
-│   └── requirements.txt
+├── label_encoder_gender_reg.pkl
+├── onehot_encoder_geo_reg.pkl
+├── scaler_reg.pkl
 │
-├── 📜 LICENSE
-│
-└── 📖 README.md
+├── logs/
+├── regressionlogs/
+└── screenshots/
 ```
 
 ---
 
-# 📁 Important Files
+# 📁 File Guide
 
-| File                           | Purpose                                                 |
-| ------------------------------ | ------------------------------------------------------- |
-| `Churn_Modelling.csv`          | Customer dataset used for both projects                 |
-| `experiments.ipynb`            | Classification data preparation and ANN experimentation |
-| `predictions.ipynb`            | Example churn prediction workflow                       |
-| `app.py`                       | Streamlit churn prediction application                  |
-| `model.h5`                     | Trained ANN classification model                        |
-| `scaler.pkl`                   | Classification feature scaler                           |
-| `label_encoder_gender.pkl`     | Classification gender encoder                           |
-| `onehot_encoder_geo.pkl`       | Classification geography encoder                        |
-| `salaryregression.ipynb`       | Salary regression experimentation and training          |
-| `regression_app.py`            | Streamlit salary prediction application                 |
-| `regression_model.keras`       | Trained ANN regression model                            |
-| `scaler_reg.pkl`               | Regression feature scaler                               |
-| `label_encoder_gender_reg.pkl` | Regression gender encoder                               |
-| `onehot_encoder_geo_reg.pkl`   | Regression geography encoder                            |
-| `logs/`                        | Classification TensorBoard logs                         |
-| `regressionlogs/`              | Regression TensorBoard logs                             |
-| `screenshots/`                 | Training and model visualizations                       |
-| `requirements.txt`             | Python dependencies                                     |
-| `LICENSE`                      | GNU GPL v3 license                                      |
+| File                         | Purpose                                  |
+| ---------------------------- | ---------------------------------------- |
+| `Churn_Modelling.csv`        | Customer dataset used by the experiments |
+| `experiments.ipynb`          | ANN classification workflow              |
+| `predictions.ipynb`          | Classification prediction experiments    |
+| `hyperparametertuning.ipynb` | ANN hyperparameter search                |
+| `app.py`                     | Streamlit churn prediction application   |
+| `model.h5`                   | Saved ANN classification model           |
+| `salaryregression.ipynb`     | ANN salary regression workflow           |
+| `regression_app.py`          | Streamlit salary prediction application  |
+| `regression_model.keras`     | Saved ANN regression model               |
+| `*_gender*.pkl`              | Serialized gender encoders               |
+| `onehot_*geo*.pkl`           | Serialized geography encoders            |
+| `scaler*.pkl`                | Serialized feature scalers               |
+| `logs/`                      | Classification TensorBoard logs          |
+| `regressionlogs/`            | Regression TensorBoard logs              |
+| `screenshots/`               | Training and model visualizations        |
+| `requirements.txt`           | Python dependencies                      |
+| `LICENSE`                    | GNU GPL v3 license                       |
+
+---
+
+# 🛠️ Tech Stack
+
+| Category             | Technologies           |
+| -------------------- | ---------------------- |
+| Programming Language | Python                 |
+| Deep Learning        | TensorFlow, Keras      |
+| Machine Learning     | Scikit-learn, SciKeras |
+| Data Processing      | Pandas, NumPy          |
+| Visualization        | Matplotlib             |
+| Experiment Tracking  | TensorBoard            |
+| Deployment           | Streamlit              |
+| Notebook Environment | Jupyter / IPykernel    |
+
+The current `requirements.txt` includes TensorFlow `2.21.0`, Pandas, NumPy, Scikit-learn, TensorBoard, Matplotlib, Streamlit, IPykernel, Keras, and SciKeras.
 
 ---
 
@@ -423,12 +452,9 @@ ANN-Binary-Classification/
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/AyAnand117/ANN-Binary-Classification.git
-
+git clone <repository-url>
 cd ANN-Binary-Classification
 ```
-
----
 
 ## 2. Create a Virtual Environment
 
@@ -436,29 +462,15 @@ cd ANN-Binary-Classification
 
 ```bash
 python -m venv .venv
-```
-
-Activate the environment:
-
-```bash
 .venv\Scripts\activate
-```
-
-For PowerShell:
-
-```powershell
-.venv\Scripts\Activate.ps1
 ```
 
 ### macOS / Linux
 
 ```bash
 python3 -m venv .venv
-
 source .venv/bin/activate
 ```
-
----
 
 ## 3. Install Dependencies
 
@@ -466,350 +478,176 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Current dependencies include:
-
-* TensorFlow `2.21.0`
-* Pandas
-* NumPy
-* Scikit-learn
-* Streamlit
-* TensorBoard
-* Matplotlib
-* IPykernel
-
----
-
-# ▶️ Run the Applications
-
-## Customer Churn Prediction
-
-Run:
+## 4. Run Customer Churn Prediction
 
 ```bash
 streamlit run app.py
 ```
 
-The application allows you to enter customer information and returns:
-
-```text
-Churn Probability
-        +
-Churn Classification
-```
-
----
-
-## Salary Prediction
-
-Run:
+## 5. Run Salary Prediction
 
 ```bash
 streamlit run regression_app.py
 ```
 
-The application accepts customer information and returns:
-
-```text
-Predicted Estimated Salary
-```
+Run the applications from the repository root because the current inference scripts load their saved models and preprocessing artifacts using repository-relative paths.
 
 ---
 
-# 🧪 Training
+# 🧪 Working With the Notebooks
 
 ## Classification
 
-The classification model can be explored and trained using:
+Start with:
 
 ```text
 experiments.ipynb
 ```
 
-The workflow includes:
+This contains the main classification experimentation workflow.
+
+For prediction-related experimentation:
 
 ```text
-Load Dataset
-      ↓
-Data Exploration
-      ↓
-Feature Engineering
-      ↓
-Encoding
-      ↓
-Train/Test Split
-      ↓
-Scaling
-      ↓
-ANN Construction
-      ↓
-Training
-      ↓
-Early Stopping
-      ↓
-Validation
-      ↓
-Model Saving
+predictions.ipynb
 ```
 
-The trained classification model is saved as:
+## Regression
 
-```text
-model.h5
-```
-
----
-
-# 💰 Regression Training
-
-The salary prediction model is developed in:
+For salary prediction:
 
 ```text
 salaryregression.ipynb
 ```
 
-The workflow changes the target variable from:
+This workflow uses `EstimatedSalary` as the target variable.
+
+## Hyperparameter Tuning
+
+For ANN architecture experimentation:
 
 ```text
-Exited
+hyperparametertuning.ipynb
 ```
 
-to:
-
-```text
-EstimatedSalary
-```
-
-making the problem a regression task.
-
-The trained model is saved as:
-
-```text
-regression_model.keras
-```
-
-and the corresponding preprocessing artifacts are stored separately.
+This notebook uses SciKeras and GridSearchCV to evaluate different combinations of ANN layers, neurons, and epochs.
 
 ---
 
-# ⏱️ Early Stopping
+# 🎯 Learning Objectives
 
-The ANN training workflow also includes **early stopping**.
-
-Instead of blindly continuing training for a fixed number of epochs, the model can monitor validation performance and stop training when improvement stops.
-
-Conceptually:
-
-```text
-Training
-   │
-   ├── Validation improves
-   │        ↓
-   │     Continue
-   │
-   └── Validation stops improving
-            ↓
-       Early Stopping
-```
-
-This helps reduce unnecessary training and can help limit overfitting.
-
----
-
-# 📈 TensorBoard
-
-TensorBoard logs are included for both projects.
-
-### Classification
-
-```text
-logs/
-```
-
-### Regression
-
-```text
-regressionlogs/
-```
-
-These logs can be inspected using TensorBoard to understand model training and validation behavior.
-
-Launch TensorBoard with:
-
-```bash
-tensorboard --logdir logs
-```
-
-For the regression experiment:
-
-```bash
-tensorboard --logdir regressionlogs
-```
-
----
-
-# 🖥️ Streamlit Deployment
-
-Both trained models have been connected to Streamlit applications.
-
-### Classification
-
-```text
-app.py
-```
-
-### Regression
-
-```text
-regression_app.py
-```
-
-This creates a simple bridge between:
-
-```text
-Machine Learning Model
-        ↓
-Saved Model Artifact
-        ↓
-Inference Pipeline
-        ↓
-Streamlit Interface
-        ↓
-User
-```
-
-The applications load the trained model and preprocessing artifacts directly rather than retraining the model every time a prediction is requested.
-
----
-
-# 🔍 Key Learning Objectives
-
-This repository focuses on understanding Artificial Neural Networks from experimentation through deployment.
+This repository provides practical experience with:
 
 ### Machine Learning
 
 * Binary classification
 * Regression
+* Train/test splitting
+* Model evaluation
+* Hyperparameter tuning
+
+### Deep Learning
+
 * Artificial Neural Networks
-* Model training
-* Validation
-* Early stopping
-* Model persistence
-* Inference
+* Dense layers
+* Activation functions
+* Sigmoid output for binary classification
+* ANN-based regression
+* TensorFlow/Keras model training
 
 ### Data Preprocessing
 
 * Feature selection
 * Label encoding
 * One-hot encoding
-* Standardization
-* Train/test splitting
-* Reusing preprocessing artifacts
+* Feature scaling
+* Reusing fitted preprocessing objects
 
-### Deep Learning
+### Experimentation
 
-* TensorFlow
-* Keras
-* Dense neural network layers
-* Training and validation
-* TensorBoard monitoring
+* GridSearchCV
+* SciKeras
+* Cross-validation
+* TensorBoard
+* Training visualization
 
 ### Deployment
 
 * Streamlit
-* Loading trained models
-* Interactive prediction
-* Connecting preprocessing pipelines with deployed models
+* Model loading
+* Preprocessing during inference
+* Interactive prediction applications
 
 ---
 
-# 💡 What This Repository Demonstrates
+# 💡 What This Project Demonstrates
 
-The main idea behind this repository is not simply to train an ANN.
+The goal is not simply to train an ANN.
 
-It demonstrates the journey from:
+The repository demonstrates the progression from:
 
 ```text
-                    Data
-                     ↓
-              Experimentation
-                     ↓
-              Feature Engineering
-                     ↓
-               ANN Training
-                     ↓
-                Validation
-                     ↓
-             Saved Model
-                     ↓
-              Inference Code
-                     ↓
-              Streamlit App
+Dataset
+   ↓
+Exploration
+   ↓
+Preprocessing
+   ↓
+Feature Engineering
+   ↓
+ANN Development
+   ↓
+Hyperparameter Tuning
+   ↓
+Model Training
+   ↓
+Model Persistence
+   ↓
+Inference Pipeline
+   ↓
+Streamlit Application
 ```
 
-In other words, the focus is on understanding how a model moves from a **Jupyter notebook into a usable application**.
+This provides a practical example of taking machine learning experimentation from a notebook into a usable application.
 
 ---
 
-# ⚠️ Important Notes
+# ⚠️ Notes & Limitations
 
-* Run the Streamlit applications from the **repository root** so that relative model and preprocessing paths resolve correctly.
-* The churn application uses a `0.50` probability threshold for classification.
-* The regression application predicts a continuous estimated salary value.
-* The classification and regression models have separate preprocessing artifacts.
-* The repository contains trained model files, so retraining is not required simply to run the applications.
-* TensorBoard logs are included for training analysis.
-* The models are intended for learning and demonstration purposes and should not be treated as production banking decision systems without additional validation, monitoring, security, fairness analysis, and domain-specific testing.
+This repository is primarily intended for **learning, experimentation, and portfolio demonstration**.
+
+The models should not be considered production-ready banking or financial decision systems without additional work involving:
+
+* Robust validation
+* Model calibration
+* Fairness and bias analysis
+* Security
+* Input validation
+* Monitoring
+* Retraining strategies
+* Domain-specific evaluation
+
+Similarly, the salary prediction model demonstrates an ANN regression workflow using the provided dataset and should not be interpreted as a real-world salary estimation system.
 
 ---
 
 # 🚧 Future Improvements
 
-Some possible next steps for the repository include:
+Potential next steps include:
 
-* [ ] Add detailed classification metrics
-* [ ] Add ROC-AUC and Precision-Recall curves
+* [ ] Add verified classification metrics
 * [ ] Add confusion matrix
-* [ ] Add regression metrics such as MAE, MSE, RMSE and R²
-* [ ] Add model architecture visualizations
-* [ ] Add hyperparameter tuning
-* [ ] Add experiment tracking
-* [ ] Add automated tests
-* [ ] Add better input validation
+* [ ] Add ROC-AUC and Precision-Recall curves
+* [ ] Add regression metrics such as MAE, MSE, RMSE, and R²
+* [ ] Improve Streamlit input validation
+* [ ] Improve Streamlit UI/UX
 * [ ] Add model explainability
+* [ ] Add automated tests
+* [ ] Add experiment tracking/versioning
 * [ ] Containerize applications with Docker
-* [ ] Deploy both applications to the cloud
 * [ ] Add CI/CD
 * [ ] Add model monitoring
-* [ ] Improve Streamlit UI/UX
-
----
-
-# 🧰 Tech Stack
-
-### Languages
-
-* Python
-
-### Machine Learning
-
-* TensorFlow
-* Keras
-* Scikit-learn
-
-### Data
-
-* Pandas
-* NumPy
-
-### Visualization & Experimentation
-
-* Matplotlib
-* Jupyter Notebook
-* TensorBoard
-
-### Application
-
-* Streamlit
+* [ ] Deploy applications to the cloud
 
 ---
 
@@ -817,38 +655,12 @@ Some possible next steps for the repository include:
 
 This project is licensed under the **GNU General Public License v3.0**.
 
-See the [`LICENSE`](./LICENSE) file for the complete license terms.
+See `LICENSE` for the complete license text.
 
 ---
 
-# ⭐ Future Direction
+# 👨‍💻 Author
 
-This repository is evolving from a single ANN classification project into a broader collection of neural-network experiments covering different supervised learning problems.
+**Ayush Anand**
 
-Current projects:
-
-```text
-┌──────────────────────────────┐
-│     ANN Machine Learning     │
-├──────────────────────────────┤
-│                              │
-│  🏦 Customer Churn           │
-│       Classification         │
-│                              │
-│  💰 Salary Prediction        │
-│       Regression             │
-│                              │
-└──────────────────────────────┘
-```
-
-More experiments and applications can be added to the repository as the learning journey continues.
-
----
-
-<div align="center">
-
-## ⭐ If you find this repository useful, consider giving it a star!
-
-### Built with Python • TensorFlow • Keras • Scikit-learn • Streamlit
-
-</div>
+This repository is part of an ongoing machine learning and AI engineering portfolio focused on building practical models and taking them from experimentation to usable applications.
