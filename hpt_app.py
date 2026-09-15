@@ -102,7 +102,7 @@ input_data_scaled = scaler.transform(input_data)
 
 # 5. Prediction Action Trigger
 st.write("---")
-if st.button("Calculate Churn Risk", type="primary"):
+if st.button("Calculate Churn Probability", type="primary"):
     # Run forward pass through the newly optimized model
     prediction = model.predict(input_data_scaled)
     prediction_proba = float(prediction[0][0])
